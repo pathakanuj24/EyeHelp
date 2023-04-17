@@ -15,6 +15,87 @@ print("fps:", fps)
 detector = dlib.get_frontal_face_detector()
 predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
 
+# keyboard settings 
+keyboard = np.zeros((600,1000,3), np.uint8)
+
+keys_set_1 = {0: "Q", 1: "W", 2: "E", 3: "R", 4: "T",
+              5: "A", 6: "S", 7: "D", 8: "F", 9: "G",
+              10: "Z", 11: "X", 12: "C", 13: "V", 14: "B"}
+
+def letter(letter_index,text , letter_light):
+
+    # Keys
+    if letter_index == 0:
+        x = 0
+        y = 0
+    elif letter_index == 1:
+        x = 200
+        y = 0
+    elif letter_index == 2:
+        x = 400
+        y = 0
+    elif letter_index == 3:
+        x = 600
+        y = 0
+    elif letter_index == 4:
+        x = 800
+        y = 0
+    elif letter_index == 5:
+        x = 0
+        y = 200
+    elif letter_index == 6:
+        x = 200
+        y = 200
+    elif letter_index == 7:
+        x = 400
+        y = 200
+    elif letter_index == 8:
+        x = 600
+        y = 200
+    elif letter_index == 9:
+        x = 800
+        y = 200
+    elif letter_index == 10:
+        x = 0
+        y = 400
+    elif letter_index == 11:
+        x = 200
+        y = 400
+    elif letter_index == 12:
+        x = 400
+        y = 400
+    elif letter_index == 13:
+        x = 600
+        y = 400
+    elif letter_index == 14:
+        x = 800
+        y = 400
+        
+        
+        
+    width = 200
+    height = 200
+    th = 3
+    if letter_light == True:
+        cv2.rectangle(keyboard,(x+th , y+th),(x+width-th, y+height-th),(255,255,255),-1)
+    else:
+        cv2.rectangle(keyboard,(x+th , y+th),(x+width-th, y+height-th),(255,0,0),3)
+
+    # text settings
+    # Text settings
+    font_letter = cv2.FONT_HERSHEY_PLAIN
+    font_scale = 10
+    font_th = 4
+    text_size = cv2.getTextSize(text, font_letter, font_scale, font_th)[0]
+    width_text, height_text = text_size[0], text_size[1]
+    text_x = int((width - width_text) / 2) + x
+    text_y = int((height + height_text) / 2) + y
+    cv2.putText(keyboard, text, (text_x, text_y), font_letter, font_scale, (255, 0, 0), font_th)
+    font_letter = cv2.FONT_HERSHEY_PLAIN
+
+        
+    
+
 def midpoint(p1 ,p2):
     return int((p1.x + p2.x)/2), int((p1.y + p2.y)/2)
 
@@ -76,11 +157,23 @@ def get_gaze_ratio(eye_points, facial_landmarks):
     return gaze_ratio
     
 
+
+
+frames = 0
+letter_index = 0
 while(cap.isOpened()):
 
     _, frame = cap.read()
+    frame = cv2.resize(frame, None, fx=0.5, fy=0.5)
+    new_frame = cv2.resize(frame, (500, 500))
+    
+    
+    frames += 1
     
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    
+    
+    keyboard[:] = (0, 0, 0)
     new_frame = np.zeros((500, 500, 3), np.uint8)
     faces = detector(gray)
     for face in faces:
@@ -164,19 +257,26 @@ while(cap.isOpened()):
         
         cv2.putText(frame, str(left_Side_White), (50, 100), font, 2, (0,0,255), 3)
         cv2.putText(frame, str(right_Side_White), (50, 150), font, 2, (0,0,255), 3)
-        
-        
-        
-        
         threshold_eye = cv2.resize(threshold_eye, None, fx=5, fy=5)
         eye = cv2.resize(gray_eye, None, fx=5, fy=5)
         
         
-        # cv2.imshow("Eye", eye)
-        # cv2.imshow("Threshold", threshold_eye)
-        # cv2.imshow("Left eye", left_eye)
-        # cv2.imshow("Left side threshold", left_side_threshold)
-        # cv2.imshow("Right side threshold", right_side_threshold)
+        
+        if frames == 10:
+            letter_index += 1
+            frames = 0
+        if letter_index == 15:
+            letter_index = 0
+            
+        for i in range(15):
+            if i == letter_index:
+                light = True
+            else:
+                light = False
+            letter(i, keys_set_1[i], light)
+        
+        
+    
 
 
 
@@ -184,9 +284,13 @@ while(cap.isOpened()):
         
     cv2.imshow('Frame', frame)
     cv2.imshow("New frame", new_frame)
+    cv2.imshow("Virtual Keyboard", keyboard)
+  
 
     key = cv2.waitKey(1)
     if key == 27:
         break
+        
+        
 cap.release()
 cv2.destroyAllWindows()
