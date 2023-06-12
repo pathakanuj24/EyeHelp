@@ -15,11 +15,11 @@ right_sound = pyglet.media.load("right.wav", streaming=False)
 
 cap = cv2.VideoCapture(0)
 
-# 
+# white board for typing characters
 board = np.zeros((300, 1400), np.uint8)
 board[:] = 255
-# 
 
+# Face landmakr detection
 detector = dlib.get_frontal_face_detector()
 predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
 
@@ -33,6 +33,8 @@ keys_set_2 = {0: "Y", 1: "U", 2: "I", 3: "O", 4: "P",
               5: "H", 6: "J", 7: "K", 8: "L", 9: "_",
               10: "V", 11: "B", 12: "N", 13: "M", 14: "<"}
 
+
+# function to draw letters
 def draw_letters(letter_index, text, letter_light):
     # Keys
     if letter_index == 0:
@@ -112,11 +114,13 @@ def draw_menu():
     cv2.putText(keyboard, "LEFT", (80, 300), font, 6, (255, 255, 255), 5)
     cv2.putText(keyboard, "RIGHT", (80 + int(cols/2), 300), font, 6, (255, 255, 255), 5)
 
+# function to calculate midpoint for horizontal and vertical line
 def midpoint(p1 ,p2):
     return int((p1.x + p2.x)/2), int((p1.y + p2.y)/2)
 
 font = cv2.FONT_HERSHEY_PLAIN
 
+# finding blinking ratio
 def get_blinking_ratio(eye_points, facial_landmarks):
     left_point = (facial_landmarks.part(eye_points[0]).x, facial_landmarks.part(eye_points[0]).y)
     right_point = (facial_landmarks.part(eye_points[3]).x, facial_landmarks.part(eye_points[3]).y)
@@ -147,6 +151,7 @@ def eyes_contour_points(facial_landmarks):
     right_eye = np.array(right_eye, np.int32)
     return left_eye, right_eye
 
+# Gaze detection function to get gaze ratio
 def get_gaze_ratio(eye_points, facial_landmarks):
     left_eye_region = np.array([(facial_landmarks.part(eye_points[0]).x, facial_landmarks.part(eye_points[0]).y),
                                 (facial_landmarks.part(eye_points[1]).x, facial_landmarks.part(eye_points[1]).y),
@@ -315,7 +320,8 @@ while True:
     loading_x = int(cols * percentage_blinking)
     cv2.rectangle(frame, (0, rows - 50), (loading_x, rows), (51, 51, 51), -1)
 
-
+    
+    # Show the frame
     cv2.imshow("Frame", frame)
     cv2.imshow("Virtual keyboard", keyboard)
     cv2.imshow("Board", board)
