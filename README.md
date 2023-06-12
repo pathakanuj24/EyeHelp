@@ -1,10 +1,13 @@
-# Problem:- 
+# Project : EyeHelp
 
+## Problem:- 
 Eye movement disorder is a medical condition characterized by abnormalities in the movement of the eyes, which can affect an individual's ability to track moving objects, read, and perform daily activities that require visual attention. This disorder can manifest in various ways, including involuntary eye movements, difficulty focusing on objects, or problems with eye coordination. 
 
-# Solution:- 
+## Solution:- 
+
 # Virtual Keyboard with Eye Tracking
 This is a virtual keyboard application that utilizes eye tracking to enable typing without physical input devices. It allows users to control the keyboard and type by blinking their eyes.
+
 ## SetUp and Installation
 To run this application, you need to have Python and the following libraries installed:
 
