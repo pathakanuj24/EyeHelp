@@ -27,23 +27,17 @@ To run this application, you need to have Python and the following libraries ins
 4. Download the pre-trained facial landmarks model file from here:
    [Link](https://github.com/italojs/facial-landmarks-recognition/blob/master/shape_predictor_68_face_landmarks.dat)
 
-Usage
-Run the script by executing the following command:
+5. Run the script by executing the following command:
 
-Copy code
-python virtual_keyboard.py
-The application will start and open the webcam feed. Place your face in front of the camera and make sure it is properly detected. You will see a virtual keyboard displayed on the screen. To control the keyboard, follow these instructions:
+   ```bash
+   python main.py 
 
-To select the left or right side of the keyboard, gaze at the corresponding side for a few seconds. The selected side will be highlighted, and the keyboard will play a sound to indicate the selection.
-To type a letter, blink your eyes. The active letter on the keyboard will be added to the text input area.
-To type a space, blink when the "_" (underscore) key is active.
-To delete a character, use the backspace key on your physical keyboard.
-The text you type will be displayed in the text input area at the top of the screen.
+The application will start and open the webcam feed. Place your face in front of the camera and make sure it is properly detected. You will see a virtual keyboard displayed on the screen. 
 
-Acknowledgements
-This application utilizes the following libraries and resources:
+### To control the keyboard, follow these instructions:
 
-OpenCV - an open-source computer vision library
-Dlib - a toolkit for creating machine learning and computer vision applications
-Pyglet - a cross-platform windowing and multimedia library for Python
-The facial landmarks model used in this application is the "shape_predictor_68_face_landmarks" model provided by the dlib library.
+- You can select the left or right side of the keyboard by gazing at the corresponding side for a few seconds. You will hear a sound left or right depending on the side you select. Once that is selected, it will display the gaze side virtual keyboard. 
+- To type a letter, blink your eyes. The active letter on the keyboard will be added to the text input area or frame.
+- The text you type will be displayed in the text input area at the top of the screen.
+
+
