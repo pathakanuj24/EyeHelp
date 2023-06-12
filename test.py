@@ -1,4 +1,3 @@
-# import Libraries
 import cv2
 import numpy as np
 import dlib
@@ -11,18 +10,12 @@ sound = pyglet.media.load("sound.wav", streaming=False)
 left_sound = pyglet.media.load("left.wav", streaming=False)
 right_sound = pyglet.media.load("right.wav", streaming=False)
 
-
-
 cap = cv2.VideoCapture(0)
-
-# 
 board = np.zeros((300, 1400), np.uint8)
 board[:] = 255
-# 
 
 detector = dlib.get_frontal_face_detector()
 predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
-
 
 # Keyboard settings
 keyboard = np.zeros((600, 1000, 3), np.uint8)
@@ -32,6 +25,8 @@ keys_set_1 = {0: "Q", 1: "W", 2: "E", 3: "R", 4: "T",
 keys_set_2 = {0: "Y", 1: "U", 2: "I", 3: "O", 4: "P",
               5: "H", 6: "J", 7: "K", 8: "L", 9: "_",
               10: "V", 11: "B", 12: "N", 13: "M", 14: "<"}
+
+
 
 def draw_letters(letter_index, text, letter_light):
     # Keys
@@ -86,7 +81,6 @@ def draw_letters(letter_index, text, letter_light):
     th = 3 # thickness
 
     # Text settings
- 
     font_letter = cv2.FONT_HERSHEY_PLAIN
     font_scale = 10
     font_th = 4
@@ -94,14 +88,12 @@ def draw_letters(letter_index, text, letter_light):
     width_text, height_text = text_size[0], text_size[1]
     text_x = int((width - width_text) / 2) + x
     text_y = int((height + height_text) / 2) + y
-    cv2.putText(keyboard, text, (text_x, text_y), font_letter, font_scale, (255, 0, 0), font_th)
-    font_letter = cv2.FONT_HERSHEY_PLAIN
 
     if letter_light is True:
         cv2.rectangle(keyboard, (x + th, y + th), (x + width - th, y + height - th), (255, 255, 255), -1)
         cv2.putText(keyboard, text, (text_x, text_y), font_letter, font_scale, (51, 51, 51), font_th)
     else:
-        cv2.rectangle(keyboard, (x + th, y + th), (x + width - th, y + height - th), (255, 0, 0), -1)
+        cv2.rectangle(keyboard, (x + th, y + th), (x + width - th, y + height - th), (51, 51, 51), -1)
         cv2.putText(keyboard, text, (text_x, text_y), font_letter, font_scale, (255, 255, 255), font_th)
 
 def draw_menu():
@@ -126,10 +118,10 @@ def get_blinking_ratio(eye_points, facial_landmarks):
     #hor_line = cv2.line(frame, left_point, right_point, (0, 255, 0), 2)
     #ver_line = cv2.line(frame, center_top, center_bottom, (0, 255, 0), 2)
 
-    hor_line_length = hypot((left_point[0] - right_point[0]), (left_point[1] - right_point[1]))
-    ver_line_length = hypot((center_top[0] - center_bottom[0]), (center_top[1] - center_bottom[1]))
+    hor_line_lenght = hypot((left_point[0] - right_point[0]), (left_point[1] - right_point[1]))
+    ver_line_lenght = hypot((center_top[0] - center_bottom[0]), (center_top[1] - center_bottom[1]))
 
-    ratio = hor_line_length / ver_line_length
+    ratio = hor_line_lenght / ver_line_lenght
     return ratio
 
 def eyes_contour_points(facial_landmarks):
@@ -198,7 +190,7 @@ last_keyboard_selected = "left"
 select_keyboard_menu = True
 keyboard_selection_frames = 0
 
-while True:
+while (cap.isOpened()):
     _, frame = cap.read()
     #frame = cv2.resize(frame, None, fx=0.8, fy=0.8)
     rows, cols, _ = frame.shape
@@ -242,7 +234,7 @@ while True:
             gaze_ratio_right_eye = get_gaze_ratio([42, 43, 44, 45, 46, 47], landmarks)
             gaze_ratio = (gaze_ratio_right_eye + gaze_ratio_left_eye) / 2
 
-            if gaze_ratio <= 1.2:
+            if gaze_ratio <= 0.9:
                 keyboard_selected = "right"
                 keyboard_selection_frames += 1
                 # If Kept gaze on one side more than 15 frames, move to keyboard
@@ -270,8 +262,8 @@ while True:
 
         else:
             # Detect the blinking to select the key that is lighting up
-            if blinking_ratio > 3.5:
-                # cv2.putText(frame, "BLINKING", (50, 150), font, 7, (255, 0, 0), thickness=3)
+            if blinking_ratio > 5:
+                # cv2.putText(frame, "BLINKING", (50, 150), font, 4, (255, 0, 0), thickness=3)
                 blinking_frames += 1
                 frames -= 1
 
