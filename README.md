@@ -4,7 +4,7 @@ Eye movement disorder is a medical condition characterized by abnormalities in t
 
 # Solution:- 
 # Virtual Keyboard with Eye Tracking
-This is a virtual keyboard application that utilizes eye tracking to enable typing without physical input devices. It allows users to control the keyboard and type by blinking their eyes.In this project, users can able to type just by blinking their eyes.
+This is a virtual keyboard application that utilizes eye tracking to enable typing without physical input devices. It allows users to control the keyboard and type by blinking their eyes.
 ## SetUp and Installation
 To run this application, you need to have Python and the following libraries installed:
 
