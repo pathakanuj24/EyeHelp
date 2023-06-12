@@ -275,7 +275,7 @@ while True:
 
         else:
             # Detect the blinking to select the key that is lighting up
-            if blinking_ratio > 3.5:
+            if blinking_ratio > 3.6:
                 # cv2.putText(frame, "BLINKING", (50, 150), font, 7, (255, 0, 0), thickness=3)
                 blinking_frames += 1
                 frames -= 1
